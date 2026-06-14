@@ -10,11 +10,11 @@ filtro_estado2016 = df_2016['uf_entidade'].isin(['AL','PI','SE'])
 ## Crio um novo database filtrado, usando a função do pandas .loc() que serve para filtrar tanto a partir de nome de colunas como utilizando filtros de coluna
 df_final2025 = df_2025.loc[
     filtro_estado2025,
-    ['UF_ENTIDADE','NOME_ENTIDADE','NO_ALFABETIZANDO','IDADE','RACA_COR','ZONA','SEGMENTO']
+    ['UF_ENTIDADE','NOME_ENTIDADE','NO_ALFABETIZANDO','IDADE','RACA_COR','ZONA']
     ]
 df_final2016 = df_2016.loc[
     filtro_estado2016,
-    ['uf_entidade','nome_entidade','no_alfabetizando','sexo','idade','raca_cor','zona','situacao']
+    ['uf_entidade','nome_entidade','no_alfabetizando','idade','raca_cor','zona']
 ]
 
 ## transformo os dataframes filtrados em arquivo .csv
