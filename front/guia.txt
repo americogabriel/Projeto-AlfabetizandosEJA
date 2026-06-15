@@ -1,0 +1,179 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    GUIA DE APRESENTACAO - DASHBOARD EJA                      ║
+║                   Analise Alfabetizandos 2016 vs 2025                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
++------------------------------------------------------------------------------+
+| 1. PRE-REQUISITOS                                                            |
++------------------------------------------------------------------------------+
+
+  - Node.js 18+ instalado (verifique: node --version)
+  - npm 9+ ou yarn/pnpm
+  - Navegador moderno (Chrome, Firefox, Edge)
+  - Resolucao minima: 1366x768 (ideal 1920x1080)
+
++------------------------------------------------------------------------------+
+| 2. COMO RODAR LOCALMENTE                                                     |
++------------------------------------------------------------------------------+
+
+  PASSO 1 - Abrir terminal na pasta do dashboard:
+  ----------------------------------------------
+    cd Projeto-AlfabetizandosEJA/dashboard
+
+  PASSO 2 - Instalar dependencias (apenas na primeira vez):
+  ---------------------------------------------------------
+    npm install
+
+  PASSO 3 - Iniciar servidor de desenvolvimento:
+  ----------------------------------------------
+    npm run dev
+
+  PASSO 4 - Abrir no navegador:
+  ------------------------------
+    >> http://localhost:5173
+
+    O Vite mostrara no terminal:
+      VITE v5.x.x  ready in XXX ms
+      >> Local:   http://localhost:5173/
+
++------------------------------------------------------------------------------+
+| 3. COMANDOS UTEIS                                                            |
++------------------------------------------------------------------------------+
+
+  npm run dev        # Desenvolvimento com hot-reload
+  npm run build      # Build de producao (gera pasta dist/)
+  npm run preview    # Testar build local (http://localhost:4173)
+  npm run lint       # Verificar codigo (ESLint)
+
++------------------------------------------------------------------------------+
+| 4. ESTRUTURA DO DASHBOARD - NAVEGACAO                                        |
++------------------------------------------------------------------------------+
+
+  VISAO GERAL (/)
+     - KPIs: Total, Estados, Idade Media, % Urbano/Rural
+     - Grafico de Barras: Top 10 Estados (ano selecionado)
+     - Pizza: Distribuicao Raca/Cor + Zona (lado a lado)
+     - Filtros: Ano [2016/2025] | Estado | Zona | Raca/Cor
+
+  POR ESTADO (/estado)
+     - Seletor de Estado (dropdown com 9 estados NE)
+     - KPIs do estado selecionado
+     - Graficos: Faixa Etaria, Raca/Cor, Zona, Entidades
+     - Tabela paginada com dados individuais (nome, idade, etc.)
+
+  COMPARATIVO (/comparativo)
+     - Estados em comum: AL, PI, SE (3 estados)
+     - Barras agrupadas: Total por estado (2016 vs 2025)
+     - Linha: Evolucao faixa etaria
+     - Diff cards: Crescimento/queda % por estado
+     - Insights automaticos calculados
+
++------------------------------------------------------------------------------+
+| 5. DADOS CARREGADOS                                                          |
++------------------------------------------------------------------------------+
+
+  2025 (Alfabetizados_2025.csv filtrado NE):
+  ------------------------------------------
+  - 9 estados: AL, BA, CE, MA, PB, PE, PI, RN, SE
+  - ~10.644 registros
+  - Colunas: UF, Entidade, Nome, Idade, Raca/Cor, Zona, Segmento
+
+  2016 (Alfabetizados_2016.csv filtrado):
+  ----------------------------------------
+  - 3 estados: AL, PI, SE (filtro original mais restrito)
+  - ~25.187 registros
+  - Colunas: UF, Entidade, Nome, Sexo, Idade, Raca/Cor, Zona, Situacao
+
+  IMPORTANTE PARA APRESENTACAO:
+  -----------------------------
+  - Comparativo 2016 vs 2025 usa APENAS AL, PI, SE (intersecao)
+  - 2025 tem mais estados -> totais gerais nao comparaveis diretamente
+  - Sempre explique: "Comparativo valido apenas para AL, PI, SE"
+
++------------------------------------------------------------------------------+
+| 6. FLUXO DE DEMONSTRACAO SUGERIDO (5-7 min)                                  |
++------------------------------------------------------------------------------+
+
+  MIN 0:00 - 0:30  | ABERTURA
+  -------------------------------------------------------
+  - Abrir http://localhost:5173
+  - Mostrar tela inicial - design natureza, carrega rapido
+  - Explicar: "Zero backend, CSVs carregados no browser via PapaParse"
+
+  MIN 0:30 - 1:30  | VISAO GERAL 2025
+  -------------------------------------------------------
+  - KPIs: Total ~10k, 9 estados, idade media ~38 anos
+  - Barras: BA/PE/MA lideram (maiores populacoes)
+  - Pizza: Maioria Parda (~60%), Urbana (~55%)
+  - Interacao: Mudar filtro Zona -> Rural -> graficos atualizam
+
+  MIN 1:30 - 2:30  | VISAO GERAL 2016
+  -------------------------------------------------------
+  - Trocar Ano para 2016 (topo)
+  - KPIs: Total ~25k (mais registros), 3 estados apenas
+  - Explicar diferenca de escopo do filtro original
+  - Pizza: Sexo aparece (2016 tem, 2025 nao)
+
+  MIN 2:30 - 4:00  | POR ESTADO
+  -------------------------------------------------------
+  - Navegar menu lateral -> "Por Estado"
+  - Selecionar BA (maior volume 2025)
+  - Mostrar tabela: busca por nome, paginacao
+  - Voltar, selecionar AL (tem dados nos 2 anos)
+
+  MIN 4:00 - 5:30  | COMPARATIVO 2016 vs 2025
+  -------------------------------------------------------
+  - Menu -> "Comparativo"
+  - Barras agrupadas AL/PI/SE: cresceu ou caiu?
+  - Diff cards: % variacao por estado
+  - Linha faixa etaria: envelhecimento ou rejuvenescimento?
+  - Insight: "AL cresceu X%, PI caiu Y% - migracao? politica publica?"
+
+  MIN 5:30 - 6:00  | FECHAMENTO
+  -------------------------------------------------------
+  - Resumo: ETL Python -> CSV -> React Dashboard
+  - Tech stack: Vite + React + TS + Recharts + PapaParse
+  - Deploy: npm run build -> pasta dist/ -> Vercel/Netlify/GitHub Pages
+  - Codigo aberto, extensivel
+
++------------------------------------------------------------------------------+
+| 7. TROUBLESHOOTING                                                           |
++------------------------------------------------------------------------------+
+
+  PROBLEMA: "Pagina em branco / erro no console"
+  ------------------------------------------------
+  >> Verifique se esta na pasta correta: cd dashboard
+  >> Rode: rm -rf node_modules package-lock.json && npm install
+  >> Confira Node: node --version (precisa 18+)
+
+  PROBLEMA: "Graficos nao aparecem / dados nao carregam"
+  ------------------------------------------------------
+  >> Abra DevTools (F12) -> Console -> procure erros CORS/CSV
+  >> Verifique se CSVs estao em public/data/
+  >> Hard refresh: Ctrl+Shift+R (limpa cache)
+
+  PROBLEMA: "Porta 5173 ocupada"
+  -------------------------------
+  >> Vite tenta 5174, 5175... automaticamente
+  >> Ou force: npm run dev -- --port 3000
+
+  PROBLEMA: "Build falha no deploy"
+  ---------------------------------
+  >> Rode local: npm run build
+  >> Verifique erros TypeScript/ESLint
+  >> Corrija antes de fazer deploy
+
++------------------------------------------------------------------------------+
+| 8. CONTATOS / REFERENCIAS                                                    |
++------------------------------------------------------------------------------+
+
+  - Dados originais: Gov.br - Programa EJA
+  - Script ETL: data/bruto/read_csv.py
+  - Planejamento tecnico: PLANEJAMENTO.md
+  - Documentacao Recharts: https://recharts.org
+  - Documentacao PapaParse: https://www.papaparse.com
+  - Documentacao Vite: https://vitejs.dev
+
+===============================================================================
+                         BOA APRESENTACAO!
+===============================================================================
