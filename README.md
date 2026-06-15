@@ -32,3 +32,22 @@ A partir da análise das bases de dados, espera-se identificar tendências, dife
 ## Fonte dos Dados
 
 Dados públicos disponibilizados pelo programa de Educação de Jovens e Adultos (EJA) através dos portais governamentais brasileiros.
+
+### 2. Criar e ativar um ambiente virtual (Opcional, mas recomendado)
+**No Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**No Mac/Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Instalar as dependências
+```bash
+pip install -r requirements.txt
+```
+
